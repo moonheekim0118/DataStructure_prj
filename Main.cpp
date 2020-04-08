@@ -9,6 +9,10 @@ using namespace std;
 다른 txt 파일에 변경된 정보를 출력, 저장할 수 있습니다.
 */
 
+//남은 것 : cmd + 랑 -  더 수정
+//month search
+//write !!
+
 void print_help() {
 	cout << "R: read from a file" << endl;
 	cout << "+: add a new entry" << endl;
@@ -18,21 +22,29 @@ void print_help() {
 	cout << "Q: quit the program" << endl;
 }
 
-void read_file(List&list) { //파일로부터 read 함수
+void read_file(List&list) { //파일로부터 read 함수  구현완료 
+	bool flag = false; //받은 입력이 공백인지 구분 
 	string fileName; 
 	int entry_num;
+	string txt = ".txt";
 	string info[3];
 	cin >> fileName; //파일 이름을 입력받는다
 	cin >> entry_num;
+	fileName.append(txt);
 	ifstream in(fileName); //입력받은 파일을 연다 
 	if (in.is_open()) {
-		for (int i = 0; i < entry_num; i++) {
+		for (int i = 0; i < entry_num+(entry_num-1); i++) { //공백빼고 받아야한다. 공백의 수 (entry_num-1)
 			for (int j = 0; j < 3; j++) {
-				in >> info[j];
+				getline(in, info[j]);
+				if (info[j] == "") { //공백일경우 insert안해주기 
+					flag = true;
+					break;
+				}
 			}
-			//정보리스트에 입력
-			list.insert(info);
+			if (!flag) {
+				list.insert(info); }
 			//리스트에 삽입 
+			flag = false;
 		}
 	}
 	in.close();
@@ -55,10 +67,12 @@ int main(void) {
 			list.showStructure();
 			break;
 		case '+':
-			cout << "Name:";
+			cout << "Name:"; 
 			cin >> info[0];
-			cout << "Phone: ";
+			cin.ignore(100, '\n');
+			cout << "Phone: "; 
 			cin >> info[1];
+			cin.ignore(100, '\n');
 			cout << "Birthday: ";
 			cin >> info[2];
 			list.insert(info); 

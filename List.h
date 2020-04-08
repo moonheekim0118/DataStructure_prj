@@ -7,8 +7,8 @@ class List;
 class ListNode;
 
 class birthdayInfo { /*생일정보 저장 클래스*/
+    birthdayInfo() {};
 private:
-    birthdayInfo();
     string year; //년도
     string month; //월
     string date; //일

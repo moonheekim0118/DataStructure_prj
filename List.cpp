@@ -5,13 +5,13 @@ using namespace std;
 
 
 //listNode 생성자
-ListNode::ListNode(string info[]) {
+ListNode::ListNode(string info[]) { //구현완료 
 	name = info[0];
 	phone_number = info[1];
 	birthday_origin = info[2];
 	string month = return_month(info[2].substr(0,1));
 	string date = info[2].substr(3, 4);
-	string year = info[2].substr(6, 9); //이거 수정해주기 
+	string year = info[2].substr(6, 9);
 	birthday_parsing.year = year;
 	birthday_parsing.month = month; //여기에 들어가는 month의 형태는 January 
 	birthday_parsing.date = date; 
@@ -29,14 +29,18 @@ List::~List() //List 소멸자
 	clear();
 }
 
-void List::insert(string info[])
+void List::insert(string info[]) //구현완료
 {
 	ListNode* newNode = new ListNode(info);
 	if (isFull()) { return; }
+
 	newNode->next = NULL; //맨 뒤에 저장되기때문에 null값 
 	if (head == NULL)  //첫노드라면 head와 tail이 모두 가리킨다.
 	{
 		head = newNode; //head에 저장  
+	}
+	else {
+		tail->next = newNode;
 	}
 	tail = newNode;
 }
@@ -62,8 +66,6 @@ void List::remove(string Name)
 		tmp = tmp->next;
 	}
 	cout << " there is no such person!" << endl;
-	return;
-
 }
 
 
@@ -88,16 +90,7 @@ bool List::isEmpty() const
 
 bool List::isFull() const
 {
-	ListNode* tmp;
-	tmp = new ListNode; //확인을 위해 임시 생성
-	tmp->next = NULL;
-	if (tmp == NULL) {
-		return true;
-	}
-	else {
-		delete tmp;
-		return false;
-	}
+	return false;
 }
 
 string ListNode:: return_month(string m) { 
@@ -147,9 +140,11 @@ void List::showStructure() const
 
 	ListNode* tmp = head;
 	int total = 0;
-	int month_count[13] = { 0, };
 	while (tmp != NULL) {
 		total++;
+		cout << tmp->name << endl;
+		cout << tmp->phone_number << endl;
+		cout << tmp->birthday_origin << endl;
 		tmp = tmp->next;
 	}
 	cout << "Total number of entries in the list: " << total << endl;
@@ -165,6 +160,7 @@ void List::write_file() const{
 		cout << tmp->name << endl;
 		cout << tmp->phone_number << endl;
 		cout << tmp->birthday_origin << endl;
+		cout << endl;
 		tmp = tmp->next;
 	}
 
