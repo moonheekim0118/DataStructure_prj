@@ -6,28 +6,15 @@ using namespace std;
 class List;
 class ListNode;
 
-class birthdayInfo { /*생일정보 저장 클래스*/
-    birthdayInfo() {};
-private:
-    string year; //년도
-    string month; //월
-    string date; //일
-    friend class ListNode;
-    friend class List;
-    
-};
 class ListNode         
 {
-
-
 private:
     ListNode(string info[]);
     ListNode();
     string name;
     string phone_number;
     string birthday_origin; //원형태의 생일 입력정보 저장
-    birthdayInfo birthday_parsing; //생일입력정보 '/' 단위로 끊어서 년도, 월, 일 저장 
-    string return_month(string m);
+    int month; //month만 따로 저장
     // List data item
     ListNode* next;   // Pointer to the next list node
 

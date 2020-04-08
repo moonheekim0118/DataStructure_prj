@@ -10,8 +10,8 @@ using namespace std;
 */
 
 //남은 것 : cmd + 랑 -  더 수정
-//month search
-//write !!
+//write 
+//스트링 입력
 
 void print_help() {
 	cout << "R: read from a file" << endl;
@@ -26,11 +26,10 @@ void read_file(List&list) { //파일로부터 read 함수  구현완료
 	bool flag = false; //받은 입력이 공백인지 구분 
 	string fileName; 
 	int entry_num;
-	string txt = ".txt";
 	string info[3];
 	cin >> fileName; //파일 이름을 입력받는다
 	cin >> entry_num;
-	fileName.append(txt);
+	fileName.append(".txt");
 	ifstream in(fileName); //입력받은 파일을 연다 
 	if (in.is_open()) {
 		for (int i = 0; i < entry_num+(entry_num-1); i++) { //공백빼고 받아야한다. 공백의 수 (entry_num-1)
@@ -67,9 +66,9 @@ int main(void) {
 			list.showStructure();
 			break;
 		case '+':
-			cout << "Name:"; 
-			cin >> info[0];
-			cin.ignore(100, '\n');
+			cout << "Name:";  
+			getline(cin, info[0]); //name 입력 처리 해주기 
+			cin.ignore(100, '\n'); //현재 공백 못받음 s
 			cout << "Phone: "; 
 			cin >> info[1];
 			cin.ignore(100, '\n');
@@ -80,7 +79,7 @@ int main(void) {
 			break;
 		case '-':
 			cout << "Name:  ";
-			cin >> delete_Name;
+			getline(cin, info[0]);
 			list.remove(delete_Name);
 			break;
 		case'W':

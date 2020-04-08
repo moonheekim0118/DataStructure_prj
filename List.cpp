@@ -1,20 +1,26 @@
 #include "List.h"
 #include <fstream>
 #include <string.h>
+#include <stdlib.h>
 using namespace std;
 
+//문자로 들어온 month를 숫자로 찾을 수 있게 구현한 배열
+//해당 인덱스가 숫자 month 
+string month_words[13] = 
+{ "","January", "Fabuary", "March", "April", "May", "June", "July", "August", "September",
+	"October","November","December" };
 
 //listNode 생성자
 ListNode::ListNode(string info[]) { //구현완료 
 	name = info[0];
 	phone_number = info[1];
 	birthday_origin = info[2];
-	string month = return_month(info[2].substr(0,1));
-	string date = info[2].substr(3, 4);
-	string year = info[2].substr(6, 9);
-	birthday_parsing.year = year;
-	birthday_parsing.month = month; //여기에 들어가는 month의 형태는 January 
-	birthday_parsing.date = date; 
+	//정수로 변환해서 저장하기 
+	//atoi함수는 string 1글자만 변환가능하므로 1월~9월인경우는 스트링 1번째만 변환해서 저장 
+	month = atoi(info[2].substr(1, 1).c_str());  
+	if (info[2].at(0)=='1'){ //10~12월은 10 더해주기 
+		month += 10; }
+
 }
 
 
@@ -59,6 +65,10 @@ void List::remove(string Name)
 		if (tmp->name == Name) { //같은 이름 가진 사람 탐색 
 			before->next = tmp->next;
 			removed = tmp;
+			if (tmp == tail) 
+			{
+				tail = before;
+			}
 			delete removed;
 			return;
 		}
@@ -78,7 +88,7 @@ void List::clear() //전체삭제 (for destructor)
 		head = head->next;
 		delete tmp;
 	}
-
+	tail = head;
 }
 
 bool List::isEmpty() const
@@ -93,27 +103,18 @@ bool List::isFull() const
 	return false;
 }
 
-string ListNode:: return_month(string m) { 
-	if (m == "01") return "January";
-	if (m == "02") return "Fabuary";
-	if (m == "03") return "March";
-	if (m == "04") return "April";
-	if (m == "05") return "May";
-	if (m == "06") return "June";
-	if (m == "07") return "July";
-	if (m == "08") return "August";
-	if (m == "09") return "September";
-	if (m == "10") return "October";
-	if (m == "11") return "November";
-	if (m == "12") return "December";
-	else return "-1";
-}
+
 
 int List::searchbyMonth(string m) { //해당 month에 해당된 사람 수 찾기 
+	//enum 
 	int count = 0; 
 	ListNode* tmp = head;
+	int n;
+	for (int i = 1; i <= 12; i++) { //받은 문자 m에 해당하는 month 숫자로 변환 
+		if (month_words[i] == m) { n = i; break; }
+	}
 	while (tmp != NULL) {
-		if (tmp->birthday_parsing.month == m) {
+		if (tmp->month == n) {
 			count++;
 		}
 		tmp = tmp->next;
@@ -123,8 +124,12 @@ int List::searchbyMonth(string m) { //해당 month에 해당된 사람 수 찾기
 
 void List::displayByMonth(string m) { //해당 month의 포함된 사람들 출력 
 	ListNode* tmp = head;
+	int n;
+	for (int i = 1; i <= 12; i++) { //받은 문자 m에 해당하는 month 숫자로 변환 
+		if (month_words[i] == m) { n = i; break; }
+	}
 	while (tmp != NULL) {
-		if (tmp->birthday_parsing.month == m) {
+		if (tmp->month == n) {
 			cout << tmp->name << endl;
 			cout << tmp->phone_number << endl;
 			cout << tmp->birthday_origin << endl;
@@ -137,7 +142,7 @@ void List::displayByMonth(string m) { //해당 month의 포함된 사람들 출력
 void List::showStructure() const
 {
 	if (isEmpty()) { return; }
-
+	int month_count[13] = { 0, };
 	ListNode* tmp = head;
 	int total = 0;
 	while (tmp != NULL) {
@@ -145,14 +150,22 @@ void List::showStructure() const
 		cout << tmp->name << endl;
 		cout << tmp->phone_number << endl;
 		cout << tmp->birthday_origin << endl;
+		month_count[tmp->month]++; //해당 month인 사람들 count
 		tmp = tmp->next;
 	}
 	cout << "Total number of entries in the list: " << total << endl;
-	//어떻게 효율적으로 출력할것인가 생각해보기  
+	 
+	for (int i = 1; i <= 12; i++) {
+		if (month_count[i] != 0) {
+			cout << month_words[i] << " is :" << month_count[i] << endl;
+		}
+	}
+	
 }
 
 void List::write_file() const{
 	string fileName;
+	fileName.append(".txt");
 	ifstream in(fileName);
 	ListNode* tmp = head;
 	while (tmp != NULL) 
