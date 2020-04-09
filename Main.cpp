@@ -9,10 +9,6 @@ using namespace std;
 다른 txt 파일에 변경된 정보를 출력, 저장할 수 있습니다.
 */
 
-//남은 것 : cmd + 랑 -  더 수정
-//write 
-//스트링 입력
-
 void print_help() {
 	cout << "R: read from a file" << endl;
 	cout << "+: add a new entry" << endl;
@@ -53,6 +49,8 @@ void read_file(List&list) { //파일로부터 read 함수  구현완료
 int main(void) {
 	print_help();
 	List list;
+	string FirstName;
+	string LastName; 
 	string info[3]; //name, phone, birthday 저장 
 	string delete_Name; //삭제할 이름 입력 
 	string Month; //찾을 month 입력
@@ -67,8 +65,11 @@ int main(void) {
 			break;
 		case '+':
 			cout << "Name:";  
-			getline(cin, info[0]); //name 입력 처리 해주기 
-			cin.ignore(100, '\n'); //현재 공백 못받음 s
+			cin >> FirstName;
+			cin >> LastName;
+			FirstName.append(" ");
+			info[0] = FirstName.append(LastName);
+			cin.ignore(100, '\n'); 
 			cout << "Phone: "; 
 			cin >> info[1];
 			cin.ignore(100, '\n');
@@ -79,8 +80,11 @@ int main(void) {
 			break;
 		case '-':
 			cout << "Name:  ";
-			getline(cin, info[0]);
-			list.remove(delete_Name);
+			cin >> FirstName;
+			cin >> LastName;
+			FirstName.append(" ");
+			FirstName.append(LastName);
+			list.remove(FirstName);
 			break;
 		case'W':
 			list.write_file();
@@ -88,8 +92,7 @@ int main(void) {
 		case'M':
 			cout << "Month: ";
 			cin >> Month;
-			cout << list.searchbyMonth(Month) << endl;
-			list.displayByMonth(Month);
+			list.searchByMonth(Month);
 			break;
 		case'Q':
 			break;

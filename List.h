@@ -30,15 +30,14 @@ public:
     List(); //생성자
     ~List(); //소멸자
     //그 외 멤버함수 
-    void insert(string info[]);
-    void remove(string Name);
-    void clear();
-    int searchbyMonth(string m);
-    void displayByMonth(string m);
-    bool isEmpty() const;
-    bool isFull() const;
-    void showStructure() const;
-    void write_file() const;
+    void insert(string info[]); //ListNode 삽입 
+    void remove(string Name); //ListNode 삭제 
+    void clear(); // List모두 삭제 (for destructor) 
+    void searchByMonth(string m); //입력받은 m (month)에 해당하는 사람의 수와 정보 출력 
+    bool isEmpty() const; // list가 empty인지 확인 
+    bool isFull() const; //list가 full인지 확인 
+    void showStructure() const; //현재 데이터 정보 (총 entry 수와 month별 사람의 수 )
+    void write_file() const; /파일에 쓰기 함수 
 
 private:
     // Data members

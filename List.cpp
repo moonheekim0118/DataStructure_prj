@@ -105,75 +105,70 @@ bool List::isFull() const
 
 
 
-int List::searchbyMonth(string m) { //해당 month에 해당된 사람 수 찾기 
-	//enum 
-	int count = 0; 
+void List::searchByMonth(string m) { //해당 month의 포함된 사람들 출력 
+
+	int count = 0;
 	ListNode* tmp = head;
 	int n;
 	for (int i = 1; i <= 12; i++) { //받은 문자 m에 해당하는 month 숫자로 변환 
 		if (month_words[i] == m) { n = i; break; }
 	}
-	while (tmp != NULL) {
+
+	while (tmp != NULL) { //해당 month에 해당하는 사람 수 count 
 		if (tmp->month == n) {
 			count++;
 		}
 		tmp = tmp->next;
 	}
-	return count;
-}
 
-void List::displayByMonth(string m) { //해당 month의 포함된 사람들 출력 
-	ListNode* tmp = head;
-	int n;
-	for (int i = 1; i <= 12; i++) { //받은 문자 m에 해당하는 month 숫자로 변환 
-		if (month_words[i] == m) { n = i; break; }
-	}
-	while (tmp != NULL) {
+	cout << "Total number of birthdays in " <<m<<": "<<count << endl;
+	tmp = head;
+	while (tmp != NULL) { //해당 month에 해당하는사람들 출력 
 		if (tmp->month == n) {
 			cout << tmp->name << endl;
 			cout << tmp->phone_number << endl;
 			cout << tmp->birthday_origin << endl;
+			cout << endl;
 		}
 		tmp = tmp->next;
 	}
 
 }
  
-void List::showStructure() const
+void List::showStructure() const //모든 entry 수 , 각 month에 속한 사람의 수 출력 
 {
 	if (isEmpty()) { return; }
-	int month_count[13] = { 0, };
+
+	int month_count[13] = { 0, }; //각 month에 속한 사람의 수 count를 위한 배열 
 	ListNode* tmp = head;
 	int total = 0;
 	while (tmp != NULL) {
-		total++;
-		cout << tmp->name << endl;
-		cout << tmp->phone_number << endl;
-		cout << tmp->birthday_origin << endl;
+		total++; //모든 entry 수 계산 
 		month_count[tmp->month]++; //해당 month인 사람들 count
 		tmp = tmp->next;
 	}
 	cout << "Total number of entries in the list: " << total << endl;
 	 
 	for (int i = 1; i <= 12; i++) {
-		if (month_count[i] != 0) {
-			cout << month_words[i] << " is :" << month_count[i] << endl;
+		if (month_count[i] != 0) { //해당 month에 사람이 1명 이상 있다면 출력 
+			cout <<"    " << month_words[i] << ": " << month_count[i] << endl;
 		}
 	}
 	
 }
 
-void List::write_file() const{
+void List::write_file() const{ //파일에 쓰기 함수 list node에 접근해야하므로 List의 멤버함수
 	string fileName;
+	cin >> fileName; //쓸 파일 이름 입력받기 
 	fileName.append(".txt");
-	ifstream in(fileName);
+	ofstream out(fileName); 
 	ListNode* tmp = head;
 	while (tmp != NULL) 
 	{
-		cout << tmp->name << endl;
-		cout << tmp->phone_number << endl;
-		cout << tmp->birthday_origin << endl;
-		cout << endl;
+		out<< tmp->name << endl;
+		out << tmp->phone_number << endl;
+		out << tmp->birthday_origin << endl;
+		out << endl;
 		tmp = tmp->next;
 	}
 
