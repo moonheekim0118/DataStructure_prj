@@ -7,12 +7,12 @@ using namespace std;
 //문자로 들어온 month를 숫자로 찾을 수 있게 구현한 배열
 //해당 인덱스가 숫자 month 
 string month_words[13] = 
-{ "","January", "Fabuary", "March", "April", "May", "June", "July", "August", "September",
+{ "","January", "February", "March", "April", "May", "June", "July", "August", "September",
 	"October","November","December" };
 
 //listNode 생성자
-ListNode::ListNode(string info[]) { //구현완료 
-	name = info[0];
+ListNode::ListNode(string info[]) { 
+	name = info[0]; // 각각 정보 저장 
 	phone_number = info[1];
 	birthday_origin = info[2];
 	//정수로 변환해서 저장하기 
@@ -35,7 +35,7 @@ List::~List() //List 소멸자
 	clear();
 }
 
-void List::insert(string info[]) //구현완료
+void List::insert(string info[]) 
 {
 	ListNode* newNode = new ListNode(info);
 	if (isFull()) { return; }
@@ -54,7 +54,7 @@ void List::insert(string info[]) //구현완료
 
 void List::remove(string Name)
 {
-	if (isEmpty()) {
+	if (isEmpty()) { //리스트가 비었을 경우 
 		cout << "List is Empty"<< endl;
 		return;
 	}
@@ -65,11 +65,16 @@ void List::remove(string Name)
 		if (tmp->name == Name) { //같은 이름 가진 사람 탐색 
 			before->next = tmp->next;
 			removed = tmp;
-			if (tmp == tail) 
-			{
-				tail = before;
+
+			if (tmp == head) { //삭제해야 할 노드가 head라면 
+				head = tmp->next;
 			}
-			delete removed;
+			if (tmp == tail) //삭제해야 할 노드가 tail 이라면 
+			{
+				tail = before; //tail을 삭제해아할 노드 앞에 있는 노드로 변경해주기 
+				before->next = NULL;
+			}
+			delete removed; //메모리 할당해제
 			return;
 		}
 		before = tmp;
@@ -109,7 +114,7 @@ void List::searchByMonth(string m) { //해당 month의 포함된 사람들 출력
 
 	int count = 0;
 	ListNode* tmp = head;
-	int n;
+	int n=0;
 	for (int i = 1; i <= 12; i++) { //받은 문자 m에 해당하는 month 숫자로 변환 
 		if (month_words[i] == m) { n = i; break; }
 	}
@@ -125,9 +130,9 @@ void List::searchByMonth(string m) { //해당 month의 포함된 사람들 출력
 	tmp = head;
 	while (tmp != NULL) { //해당 month에 해당하는사람들 출력 
 		if (tmp->month == n) {
-			cout << tmp->name << endl;
-			cout << tmp->phone_number << endl;
-			cout << tmp->birthday_origin << endl;
+			cout <<"     "<<tmp->name << endl;
+			cout<< "     "<< tmp->phone_number << endl;
+			cout << "     "<<tmp->birthday_origin << endl;
 			cout << endl;
 		}
 		tmp = tmp->next;
@@ -148,10 +153,10 @@ void List::showStructure() const //모든 entry 수 , 각 month에 속한 사람의 수 출�
 		tmp = tmp->next;
 	}
 	cout << "Total number of entries in the list: " << total << endl;
-	 
+	cout << "Number of birthdays in" << endl;
 	for (int i = 1; i <= 12; i++) {
 		if (month_count[i] != 0) { //해당 month에 사람이 1명 이상 있다면 출력 
-			cout <<"    " << month_words[i] << ": " << month_count[i] << endl;
+			cout <<"     " << month_words[i] << ": " << month_count[i] << endl;
 		}
 	}
 	
@@ -159,11 +164,12 @@ void List::showStructure() const //모든 entry 수 , 각 month에 속한 사람의 수 출�
 
 void List::write_file() const{ //파일에 쓰기 함수 list node에 접근해야하므로 List의 멤버함수
 	string fileName;
+	cout << "Enter the name of the file: ";
 	cin >> fileName; //쓸 파일 이름 입력받기 
-	fileName.append(".txt");
-	ofstream out(fileName); 
+	//fileName.append(".txt");
+	ofstream out(fileName+".txt"); 
 	ListNode* tmp = head;
-	while (tmp != NULL) 
+	while (tmp != NULL)  //입력 
 	{
 		out<< tmp->name << endl;
 		out << tmp->phone_number << endl;
@@ -171,5 +177,5 @@ void List::write_file() const{ //파일에 쓰기 함수 list node에 접근해야하므로 Lis
 		out << endl;
 		tmp = tmp->next;
 	}
-
+	cout << "The list is written into " << fileName << endl;
 }

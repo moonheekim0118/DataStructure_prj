@@ -37,7 +37,7 @@ public:
     bool isEmpty() const; // list가 empty인지 확인 
     bool isFull() const; //list가 full인지 확인 
     void showStructure() const; //현재 데이터 정보 (총 entry 수와 month별 사람의 수 )
-    void write_file() const; /파일에 쓰기 함수 
+    void write_file() const; //파일에 쓰기 함수 
 
 private:
     // Data members
