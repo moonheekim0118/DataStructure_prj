@@ -32,7 +32,7 @@ void read_file(List&list) { //파일로부터 read 함수
 	ifstream in(fileName); //입력받은 파일을 연다 
 	
 	if (in.is_open()) {
-		for (int i = 0; i < entry_num+(entry_num-1); i++) { //공백의 수 (entry_num-1)
+		for (int i = 0; i < entry_num+(entry_num-1); i++) { //공백의 수==entry_num-1
 			for (int j = 0; j < 3; j++) {
 				getline(in, info[j]);
 				if (info[j] == "") { //공백일경우 insert 하지 않음 

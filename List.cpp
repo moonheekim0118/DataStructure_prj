@@ -105,6 +105,10 @@ bool List::isEmpty() const
 
 bool List::isFull() const
 {
+	ListNode* location;
+	location = new ListNode;
+	if (location == NULL) return true;
+	delete location;
 	return false;
 }
 

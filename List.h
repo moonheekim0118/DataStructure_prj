@@ -10,7 +10,7 @@ class ListNode
 {
 private:
     ListNode(string info[]);
-    ListNode();
+    ListNode() {};
     string name;
     string phone_number;
     string birthday_origin; //원형태의 생일 입력정보 저장
